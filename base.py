@@ -20,7 +20,7 @@ class ResponseStructure(BaseModel):
     status: str
     data: list[TodoModel]
     message: str
-    date_time: datetime
+   
 class LoginResponse(BaseModel):
         status: str
         data: None
@@ -36,4 +36,4 @@ class SingleTaskResponseStructure(BaseModel):
     status: str
     data: TodoModel
     message: str
-    date_time: datetime
+   
