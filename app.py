@@ -53,7 +53,7 @@ def login(user: LoginUser, db=Depends(get_db)):
       access_token = create_access_token(data={"sub": user.email}, expires_delta=access_token_expires)
       return {"status":"success","access_token": access_token, "token_type": "bearer", "data":None, "message":"Login Successful" }
 
-@app.get("/api/tasks", response_model=ResponseStructure)
+@app.get("/api/tasks")
 def read_tasks(current_user: User = Depends(get_current_user), db= Depends(get_db)):
       todos = db.query(Todo).filter(Todo.user_id == current_user.user_id).all()
       if todos:            

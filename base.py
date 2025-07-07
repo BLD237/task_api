@@ -18,7 +18,7 @@ class TodoModel(BaseModel):
     due_at: datetime
 class ResponseStructure(BaseModel):
     status: str
-    data: list[TodoModel]
+    data: TodoModel
     message: str
    
 class LoginResponse(BaseModel):
