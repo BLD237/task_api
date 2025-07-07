@@ -26,8 +26,7 @@ class LoginResponse(BaseModel):
         data: None
         access_token:str
         token_type:str
-        message: str
-        date_time: datetime
+        message: str     
 
 class Basicreponse(BaseModel):
      status: str
