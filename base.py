@@ -31,9 +31,19 @@ class LoginResponse(BaseModel):
 class Basicreponse(BaseModel):
      status: str
      message: str
-     data: None
+     data: TodoModel | None
 class SingleTaskResponseStructure(BaseModel):
     status: str
-    data: TodoModel
     message: str
+    message: str
+    data: TodoModel | None
+    response_time: datetime = datetime.now()
+
+
+class TaskCreateModel(BaseModel):   
+    title: str
+    description: str
+    category: str
+    priority : str   
+    due_at: datetime
    
