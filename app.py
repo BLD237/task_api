@@ -3,6 +3,7 @@ from fastapi.middleware.cors import CORSMiddleware
 from routes import users, tasks
 app = FastAPI(title="Task App API", 
               version="1.0.1",
+              redoc_url='/',
                 description="Task App API is a restful API used for task management. With All the CRUD operations on tasks using SQLITE database",               
                )
 
