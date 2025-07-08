@@ -17,7 +17,7 @@ def resgister_user(user: UserCreate, db=Depends(get_db)):
       db.add(new_user)
       db.commit()
       db.refresh(new_user)
-      return {"status":"success", "message":"User created successfully"}
+      return {"status":"success", "data":None, "message":"User created successfully"}
 
 @router.post("/api/auth/login", response_model=LoginResponse)
 def login(user: LoginUser, db=Depends(get_db)):
