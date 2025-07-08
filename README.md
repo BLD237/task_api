@@ -1,5 +1,5 @@
 
-# FastAPI Todo & Chat API
+# FastAPI Task API
 
 This project is a backend API built with FastAPI that supports user registration, login with JWT authentication and  task management (TODO list).
 
