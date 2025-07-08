@@ -1,7 +1,7 @@
 
-# FastAPI Todo & Chat API
+# FastAPI Task API
 
-This project is a backend API built with FastAPI that supports user registration, login with JWT authentication, task management (TODO list), and real-time messaging via WebSockets.
+This project is a backend API built with FastAPI that supports user registration, login with JWT authentication and  task management (TODO list).
 
 ---
 
@@ -11,10 +11,7 @@ This project is a backend API built with FastAPI that supports user registration
   Register and login users securely with hashed passwords and JWT tokens.
 
 - **Task Management**  
-  Users can fetch their TODO tasks (CRUD endpoints partially implemented).
-
-- **Real-Time Messaging**  
-  WebSocket endpoint allows live messaging per user.
+  Users can fetch their TODO tasks .
 
 - **CORS Enabled**  
   API allows cross-origin requests from any origin.
@@ -29,8 +26,7 @@ This project is a backend API built with FastAPI that supports user registration
 - FastAPI  
 - SQLAlchemy ORM  
 - SQLite (or any compatible database)  
-- JWT for authentication  
-- WebSockets for real-time communication  
+- JWT for authentication   
 - APScheduler (for background tasks, planned)  
 - Python 3.9+
 
@@ -157,19 +153,7 @@ This project is a backend API built with FastAPI that supports user registration
 
 ---
 
-### WebSocket Endpoint
 
-- **Real-Time Messaging**
-
-  ```
-  ws://<host>/ws?token=<JWT_TOKEN>
-  ```
-
-  Connect using WebSocket passing the JWT token as a query parameter for authentication.
-
-  The server echoes received messages back to the client.
-
----
 
 ## Project Structure
 
@@ -190,17 +174,16 @@ This project is a backend API built with FastAPI that supports user registration
 
 - Complete task CRUD operations  
 - Implement notifications with APScheduler  
-- Expand WebSocket features (multi-user chat, groups)  
-- Frontend integration (Streamlit or React)
+
 
 ---
 
 ## License
 
-MIT © 2025 Your Name
+MIT © 2025 BLD237(Mufor Belmond)
 
 ---
 
 ## Contact
 
-If you have questions or want to contribute, please open an issue or contact me at your-email@example.com.
+If you have questions or want to contribute, please open an issue or contact me at muforbelmond20@gmail.com.
