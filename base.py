@@ -25,10 +25,16 @@ class ResponseStructure(BaseModel):
     status: str
     data: TodoModel
     message: str
-   
+class UserData(BaseModel):
+        user_id : str
+        name  : str
+        email : str
+        hashed_password : str
+        registration_date : str
+       
 class LoginResponse(BaseModel):
         status: str
-        data: None
+        data: UserData | None
         access_token:str
         token_type:str
         message: str     
