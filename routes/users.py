@@ -26,5 +26,5 @@ def login(user: LoginUser, db=Depends(get_db)):
             raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail={"status":"failed", "data":None, "message":"Invalid email or password"})
       access_token_expires = timedelta(days=30)
       access_token = create_access_token(data={"sub": user.email}, expires_delta=access_token_expires)
-      return {"status":"success","access_token": access_token, "token_type": "bearer", "data":None, "message":"Login Successful" }
+      return {"status":"success","access_token": access_token, "token_type": "bearer", "data":usr, "message":"Login Successful" }
 
