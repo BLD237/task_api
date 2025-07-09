@@ -30,7 +30,7 @@ class UserData(BaseModel):
         name  : str
         email : str
         hashed_password : str
-        registration_date : str
+        registration_date : datetime
        
 class LoginResponse(BaseModel):
         status: str
