@@ -34,7 +34,7 @@ It supports full CRUD operations on tasks and categories with user authenticatio
 - **Backend:** FastAPI  
 - **Database:** MySQL  
 - **Authentication:** OAuth2 password flow (JWT tokens)  
-- **ORM:** SQLAlchemy (assumed)  
+- **ORM:** SQLAlchemy 
 
 ---
 
