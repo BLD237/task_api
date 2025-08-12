@@ -1,69 +1,92 @@
+# Task App API
 
-# FastAPI Task API
+Task App API is a RESTful API for task management built with **FastAPI** and **MySQL**.  
+It supports full CRUD operations on tasks and categories with user authentication via OAuth2.
 
-This project is a backend API built with FastAPI that supports user registration, login with JWT authentication and  task management (TODO list).
+---
+
+## Table of Contents
+
+- [Features](#features)
+- [Tech Stack](#tech-stack)
+- [Getting Started](#getting-started)
+- [API Endpoints](#api-endpoints)
+- [Authentication](#authentication)
+- [Data Models](#data-models)
+- [Example Requests](#example-requests)
+- [Contributing](#contributing)
+- [License](#license)
 
 ---
 
 ## Features
 
-- **User Authentication**  
-  Register and login users securely with hashed passwords and JWT tokens.
-
-- **Task Management**  
-  Users can fetch their TODO tasks .
-
-- **CORS Enabled**  
-  API allows cross-origin requests from any origin.
-
-- **Background Task Scheduling**  
-  Placeholder for future notification tasks via APScheduler.
+- User registration and login with JWT token authentication  
+- Create, read, update, and delete tasks  
+- Create, read, update, and delete categories  
+- Task attributes include title, description, category, priority, due date/time, and status  
+- Secure API endpoints protected with OAuth2 password flow  
 
 ---
 
-## Technologies Used
+## Tech Stack
 
-- FastAPI  
-- SQLAlchemy ORM  
-- SQLite (or any compatible database)  
-- JWT for authentication   
-- APScheduler (for background tasks, planned)  
-- Python 3.9+
+- **Backend:** FastAPI  
+- **Database:** MySQL  
+- **Authentication:** OAuth2 password flow (JWT tokens)  
+- **ORM:** SQLAlchemy (assumed)  
 
 ---
 
-## Installation & Setup
+## Getting Started
 
-1. **Clone the repository:**
+### Prerequisites
+
+- Python 3.9+  
+- MySQL server  
+- `pip` package manager  
+
+### Installation
+
+1. Clone the repo:
 
    ```bash
-   git clone https://github.com/yourusername/fastapi-todo-chat.git
-   cd fastapi-todo-chat
+   git clone https://github.com/yourusername/task-app-api.git
+   cd task-app-api
    ```
 
-2. **Create and activate a virtual environment (recommended):**
+2. Create a virtual environment and activate it:
 
    ```bash
    python -m venv venv
-   # On Windows
-   venv\Scripts\activate
-   # On Unix or MacOS
-   source venv/bin/activate
+   source venv/bin/activate  # On Windows use `venv\Scripts\activate`
    ```
 
-3. **Install dependencies:**
+3. Install dependencies:
 
    ```bash
-   pip install fastapi uvicorn sqlalchemy passlib[bcrypt] python-jose apscheduler
+   pip install -r requirements.txt
    ```
 
-4. **Run the app:**
+4. Configure your MySQL database connection in `.env` or settings file:
+
+   ```env
+   DATABASE_URL=mysql+pymysql://username:password@localhost:3306/taskappdb
+   ```
+
+5. Run database migrations (if applicable):
+
+   ```bash
+   alembic upgrade head
+   ```
+
+6. Start the server:
 
    ```bash
    uvicorn main:app --reload
    ```
 
-5. **Open your browser at** `http://127.0.0.1:8000`
+The API will be available at `http://127.0.0.1:8000/`.
 
 ---
 
@@ -71,119 +94,137 @@ This project is a backend API built with FastAPI that supports user registration
 
 ### Authentication
 
-- **Register User**
+| Endpoint               | Method | Description          |
+|------------------------|--------|----------------------|
+| `/api/auth/register`   | POST   | Register a new user  |
+| `/api/auth/login`      | POST   | Login and get token  |
 
-  ```
-  POST /api/auth/register
-  ```
+### Tasks (Authentication required)
 
-  Request Body:
-  ```json
-  {
-    "name": "John Doe",
-    "email": "john@example.com",
-    "password": "yourpassword"
-  }
-  ```
+| Endpoint                  | Method | Description             |
+|---------------------------|--------|-------------------------|
+| `/api/tasks`              | GET    | Get all tasks           |
+| `/api/tasks`              | POST   | Create a new task       |
+| `/api/tasks/{task_id}`    | GET    | Get a task by ID        |
+| `/api/tasks/{task_id}`    | PUT    | Update a task by ID     |
+| `/api/tasks/{task_id}`    | DELETE | Delete a task by ID     |
 
-  Response:
-  ```json
-  {
-    "status": "success",
-    "message": "User created successfully"
-  }
-  ```
+### Categories (Authentication required)
 
-- **Login User**
-
-  ```
-  POST /api/auth/login
-  ```
-
-  Request Body:
-  ```json
-  {
-    "email": "john@example.com",
-    "password": "yourpassword"
-  }
-  ```
-
-  Response:
-  ```json
-  {
-    "status": "success",
-    "access_token": "<JWT_TOKEN>",
-    "token_type": "bearer",
-    "message": "Login Successful"
-  }
-  ```
+| Endpoint                     | Method | Description              |
+|------------------------------|--------|--------------------------|
+| `/api/categories/`           | GET    | Get all categories       |
+| `/api/categories/`           | POST   | Create a new category    |
+| `/api/categories/{category_id}` | PUT    | Update a category by ID  |
+| `/api/categories/{category_id}` | DELETE | Delete a category by ID  |
 
 ---
 
-### Tasks
+## Authentication
 
-- **Get User Tasks**
-
-  ```
-  GET /api/tasks
-  ```
-
-  Requires Bearer token in Authorization header.
-
-  Response:
-  ```json
-  {
-    "status": "success",
-    "data": [
-      {
-        "id": 1,
-        "title": "Task title",
-        "description": "Task description",
-        "completed": false,
-        "user_id": "user-id"
-      }
-    ],
-    "message": "Data fetched successfully"
-  }
-  ```
-
-- **Create, Read, Update, Delete Tasks**
-
-  Endpoints for these actions are present but **not implemented yet**.
-
----
-
-
-
-## Project Structure
+- Use `/api/auth/login` to authenticate with your email and password.
+- Receive an access token (JWT) in response.
+- Include the token in requests to protected endpoints:
 
 ```
-.
-├── main.py               # Main FastAPI app, routes, websocket manager
-├── database.py           # DB engine and session setup
-├── models.py             # SQLAlchemy models: User, Todo
-├── auth.py               # Authentication utilities (hashing, JWT)
-├── base.py               # Pydantic schemas (request/response models)
-├── requirements.txt      # Python dependencies
-└── README.md             # This documentation
+Authorization: Bearer <access_token>
 ```
 
 ---
 
-## Future Work
+## Data Models
 
-- Complete task CRUD operations  
-- Implement notifications with APScheduler  
+### UserCreate
 
+```json
+{
+  "name": "string",
+  "email": "string",
+  "password": "string"
+}
+```
+
+### LoginUser
+
+```json
+{
+  "email": "string",
+  "password": "string"
+}
+```
+
+### TaskCreateModel
+
+```json
+{
+  "title": "string",
+  "description": "string",
+  "category": "string",
+  "priority": "string",
+  "due_date": "YYYY-MM-DDTHH:MM:SSZ",
+  "due_time": "HH:MM:SS",
+  "status": "string"
+}
+```
+
+### CategoryCreate
+
+```json
+{
+  "title": "string",
+  "description": "string"
+}
+```
+
+---
+
+## Example Requests
+
+### Register a User
+
+```bash
+curl -X POST "http://localhost:8000/api/auth/register" \
+-H "Content-Type: application/json" \
+-d '{"name":"John Doe","email":"john@example.com","password":"password123"}'
+```
+
+### Login
+
+```bash
+curl -X POST "http://localhost:8000/api/auth/login" \
+-H "Content-Type: application/json" \
+-d '{"email":"john@example.com","password":"password123"}'
+```
+
+### Create a Task
+
+```bash
+curl -X POST "http://localhost:8000/api/tasks" \
+-H "Authorization: Bearer YOUR_ACCESS_TOKEN" \
+-H "Content-Type: application/json" \
+-d '{
+  "title": "Finish Report",
+  "description": "Complete the financial report",
+  "category": "Work",
+  "priority": "High",
+  "due_date": "2025-08-20T00:00:00Z",
+  "due_time": "17:00:00",
+  "status": "Pending"
+}'
+```
+
+---
+
+## Contributing
+
+Contributions are welcome! Please open an issue or submit a pull request.
 
 ---
 
 ## License
 
-MIT © 2025 BLD237(Mufor Belmond)
+This project is licensed under the MIT License.
 
 ---
 
-## Contact
-
-If you have questions or want to contribute, please open an issue or contact me at muforbelmond20@gmail.com.
+**Happy task managing!**
