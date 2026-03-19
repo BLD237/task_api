@@ -1,7 +1,8 @@
 # Task App API
 
-Task App API is a RESTful API for task management built with **FastAPI** and **MySQL**.  
-It supports full CRUD operations on tasks and categories with user authentication via OAuth2.
+Task App API is a RESTful API for task management built with **FastAPI** and **PostgreSQL**.  
+It supports full CRUD operations on tasks and categories with user authentication via OAuth2.  
+Database schema is managed with **Alembic** migrations. The app is designed to run on **Render** (or any host) with an optional PostgreSQL instance.
 
 ---
 
@@ -10,6 +11,7 @@ It supports full CRUD operations on tasks and categories with user authenticatio
 - [Features](#features)
 - [Tech Stack](#tech-stack)
 - [Getting Started](#getting-started)
+- [Deploying on Render](#deploying-on-render)
 - [API Endpoints](#api-endpoints)
 - [Authentication](#authentication)
 - [Data Models](#data-models)
@@ -26,15 +28,17 @@ It supports full CRUD operations on tasks and categories with user authenticatio
 - Create, read, update, and delete categories  
 - Task attributes include title, description, category, priority, due date/time, and status  
 - Secure API endpoints protected with OAuth2 password flow  
+- PostgreSQL database with Alembic migrations  
 
 ---
 
 ## Tech Stack
 
 - **Backend:** FastAPI  
-- **Database:** MySQL  
+- **Database:** PostgreSQL  
+- **Migrations:** Alembic  
 - **Authentication:** OAuth2 password flow (JWT tokens)  
-- **ORM:** SQLAlchemy 
+- **ORM:** SQLAlchemy  
 
 ---
 
@@ -43,7 +47,7 @@ It supports full CRUD operations on tasks and categories with user authenticatio
 ### Prerequisites
 
 - Python 3.9+  
-- MySQL server  
+- PostgreSQL (local or hosted, e.g. Render)  
 - `pip` package manager  
 
 ### Installation
@@ -58,8 +62,8 @@ It supports full CRUD operations on tasks and categories with user authenticatio
 2. Create a virtual environment and activate it:
 
    ```bash
-   python -m venv venv
-   source venv/bin/activate  # On Windows use `venv\Scripts\activate`
+   python -m venv .venv
+   source .venv/bin/activate   # On Windows: .venv\Scripts\activate
    ```
 
 3. Install dependencies:
@@ -68,13 +72,13 @@ It supports full CRUD operations on tasks and categories with user authenticatio
    pip install -r requirements.txt
    ```
 
-4. Configure your MySQL database connection in `.env` or settings file:
+4. Configure the database. Copy `.env.example` to `.env` and set `DATABASE_URL` to your PostgreSQL connection string (use the **external** URL when running locally):
 
    ```env
-   DATABASE_URL=mysql+pymysql://username:password@localhost:3306/taskappdb
+   DATABASE_URL=postgresql://user:password@host:5432/database_name
    ```
 
-5. Run database migrations (if applicable):
+5. Run database migrations:
 
    ```bash
    alembic upgrade head
@@ -83,10 +87,28 @@ It supports full CRUD operations on tasks and categories with user authenticatio
 6. Start the server:
 
    ```bash
-   uvicorn main:app --reload
+   uvicorn app:app --reload
    ```
 
-The API will be available at `http://127.0.0.1:8000/`.
+The API will be available at `http://127.0.0.1:8000/`. Interactive docs: `http://127.0.0.1:8000/` (ReDoc).
+
+---
+
+## Deploying on Render
+
+1. Create a **PostgreSQL** instance on Render and a **Web Service** for this repo.  
+2. In the Web Service **Environment** tab, add:
+   - `DATABASE_URL` — use the **Internal Database URL** from your Render PostgreSQL service (same network, faster and more reliable than the external URL).  
+3. Add a **Release Command** so migrations run on each deploy:
+   ```bash
+   alembic upgrade head
+   ```
+4. Set the **Start Command** to:
+   ```bash
+   uvicorn app:app --host 0.0.0.0 --port $PORT
+   ```
+
+For local development against the same database, use the **External Database URL** in your `.env`.
 
 ---
 

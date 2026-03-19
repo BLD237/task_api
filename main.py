@@ -3,12 +3,13 @@ from pydantic import BaseModel
 import sqlalchemy as sql
 from fastapi.middleware.cors import CORSMiddleware
 
-app = FastAPI(title="Task App API", 
-              version="1.0.0",
-                description="Fast Task API is a restful API used for task management. With All the CRUD operations on tasks using SQLITE database",
-                servers=[{"DeepXlabs Servers"}],
-                contact= ["MUFOR BELMOND, muforbelmond20@gmail.com"]
-                )
+app = FastAPI(
+    title="Task App API",
+    version="1.0.0",
+    description="Fast Task API is a restful API used for task management. With All the CRUD operations on tasks using PostgreSQL.",
+    servers=[{"url": "/", "description": "DeepXlabs Servers"}],
+    contact={"name": "MUFOR BELMOND", "email": "muforbelmond20@gmail.com"},
+)
 
 app.add_middleware(
     CORSMiddleware,
